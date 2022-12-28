@@ -11,7 +11,7 @@ const Home = () => {
 				<link rel="icon" href="/favicon.ico" />
 			</Head>
 			<div className="grid place-items-center error h-full text-white">
-        <Button title='create event' />
+        <Button href='/create-event' title='create event' />
       </div>
 		</>
 	);

@@ -1,3 +1,5 @@
+import Link from "next/link";
+
 type ButtonProp = {
 	href?: string;
 	title: string;
@@ -14,7 +16,7 @@ const Button = ({
 	...props
 }: ButtonProp) => {
 	return href ? (
-		<div>link button</div>
+		<Link href={href} className={`text-white bg-[rgb(245,210,24)] py-[10px] px-[30px] rounded-[10px] cursor-pointer font-semibold text-xl capitalize ${className}`}>{title}</Link>
 	) : (
 		<button
 			onClick={handleClick}

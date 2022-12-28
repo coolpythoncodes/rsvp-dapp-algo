@@ -5,32 +5,32 @@ const Details = Object({
 	name: Bytes(128),
 	reservation: UInt,
 	deadline: UInt,
-	host: Address
+	host: Address,
 });
 
 export const main = Reach.App(() => {
 	const Admin = Participant("Admin", {
 		details: Details,
-		launched: Fun([Contract], Null)
+		launched: Fun([Contract], Null),
 	});
 
 	const Guest = API("Guest", {
-		register: Fun([], Null)
+		register: Fun([], Null),
 	});
 
 	const Host = API("Host", {
-		checkin: Fun([Address, Bool], Null)
+		checkin: Fun([Address, Bool], Null),
 	});
 
 	const Info = View("Info", {
 		details: Details,
 		howMany: UInt,
-		reserved: Fun([Address], Bool)
+		reserved: Fun([Address], Bool),
 	});
 
 	const Notify = Events({
 		register: [Address],
-		checkin: [Address, Bool]
+		checkin: [Address, Bool],
 	});
 	init();
 
@@ -61,10 +61,10 @@ export const main = Reach.App(() => {
 				(ret) => {
 					enforce(thisConsensusTime() < deadline, "too late");
 					Guests[this] = true;
-          Notify.register(this);
+					Notify.register(this);
 					ret(null);
 					return [false, howMany + 1];
-				}
+				},
 			];
 		})
 		.api_(Host.checkin, (guest, showed) => {
@@ -76,12 +76,14 @@ export const main = Reach.App(() => {
 					enforce(thisConsensusTime() >= deadline, "too early");
 					delete Guests[guest];
 					transfer(reservation).to(showed ? guest : host);
-          Notify.checkin(guest, showed);
+					Notify.checkin(guest, showed);
 					ret(null);
 					return [true, howMany - 1];
-				}
+				},
 			];
 		});
 	commit();
 	exit();
 });
+
+
